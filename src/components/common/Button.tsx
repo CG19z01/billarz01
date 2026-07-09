@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.lg,
     paddingHorizontal: spacing.xl,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
   },
   disabled: {
     opacity: 0.4,
@@ -48,11 +48,23 @@ const styles = StyleSheet.create({
 const variantStyles = StyleSheet.create({
   primary: {
     backgroundColor: colors.accent.default,
+    borderWidth: borderWidth.thick,
+    borderColor: colors.accent.pressed,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.35,
+    shadowRadius: 6,
+    elevation: 5,
   },
   secondary: {
     backgroundColor: colors.leather.default,
-    borderWidth: borderWidth.hairline,
-    borderColor: colors.border.default,
+    borderWidth: borderWidth.thick,
+    borderColor: colors.border.strong,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
   },
   ghost: {
     backgroundColor: 'transparent',

@@ -72,10 +72,9 @@ export const typography: Record<TypographyVariant, TypographyStyle> = {
     textTransform: 'uppercase',
   },
   button: {
-    fontFamily: fontFamily.bodySemiBold,
-    fontSize: 15,
-    lineHeight: 20,
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
+    fontFamily: fontFamily.displaySemiBold,
+    fontSize: 17,
+    lineHeight: 22,
+    letterSpacing: 0.3,
   },
 };
