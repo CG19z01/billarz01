@@ -169,33 +169,45 @@ describe('ball-out-of-play', () => {
 });
 
 describe('fin anticipée', () => {
-  it('scores the black ball at zero and ends the game immediately', () => {
+  it('scores the black ball at zero, ends the game and eliminates its potter', () => {
     let state = freshState([ENTRIES[0], ENTRIES[1]]);
     state = engine.applyAction(state, pocketAction('p1', 5));
     state = engine.applyAction(state, pocketAction('p2', 8, 2));
 
     expect(state.remainingBalls.length).toBeGreaterThan(0);
     expect(engine.getScores(state)).toEqual({ p1: 5, p2: 0 });
-    expect(engine.getResult(state)).toEqual({ isOver: true, winnerIds: ['p1'], loserIds: [] });
+    expect(engine.getResult(state)).toEqual({
+      isOver: true,
+      winnerIds: ['p1'],
+      loserIds: ['p2'],
+    });
   });
 
-  it('lets the black-ball potter win a tie they are part of', () => {
+  it('excludes the black-ball potter from winning a tie they would otherwise be part of', () => {
     let state = freshState([ENTRIES[0], ENTRIES[1]]);
     state = pocketAll(state, 'p1', [5, 3]); // 8
     state = pocketAll(state, 'p2', [6, 2]); // 8
     state = engine.applyAction(state, pocketAction('p2', 8, 1));
 
-    expect(engine.getResult(state).winnerIds).toEqual(['p2']);
+    expect(engine.getResult(state)).toEqual({
+      isOver: true,
+      winnerIds: ['p1'],
+      loserIds: ['p2'],
+    });
   });
 
-  it('falls back to the potter of the ball just before the black ball when tied and the potter is excluded', () => {
+  it('breaks a tie among the remaining players by the highest-value ball each potted', () => {
     let state = freshState();
-    state = pocketAll(state, 'p2', [6, 2]); // 8
-    state = pocketAll(state, 'p1', [5, 3]); // 8, last non-black ball potted by p1
-    state = engine.applyAction(state, pocketAction('p3', 8, 0)); // p3 has 0
+    state = pocketAll(state, 'p2', [6, 2]); // 8, highest ball potted: 6
+    state = pocketAll(state, 'p1', [5, 3]); // 8, highest ball potted: 5
+    state = engine.applyAction(state, pocketAction('p3', 8, 0)); // p3 has 0, eliminated
 
     expect(engine.getScores(state)).toEqual({ p1: 8, p2: 8, p3: 0 });
-    expect(engine.getResult(state).winnerIds).toEqual(['p1']);
+    expect(engine.getResult(state)).toEqual({
+      isOver: true,
+      winnerIds: ['p2'],
+      loserIds: ['p3'],
+    });
   });
 
   it('eliminates the potter and ties every other entry for first when the black ball is pocketed first', () => {

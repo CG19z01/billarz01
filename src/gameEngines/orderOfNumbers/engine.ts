@@ -65,6 +65,39 @@ function resolveWinner(
   return previousPotterId ? [previousPotterId] : topEntries;
 }
 
+// Fin anticipée : le potteur de la noire est exclu du départage. Le
+// vainqueur est le joueur restant avec le plus de points ; en cas
+// d'égalité, celui qui a empoché la boule de plus grande valeur l'emporte.
+function resolveEarlyEndWinner(
+  entries: ScoreEntry[],
+  pocketedOrder: PocketedBall[],
+  blackBallPotterId: string,
+): string[] {
+  const candidateIds = entries.map((entry) => entry.id).filter((id) => id !== blackBallPotterId);
+  const scores = computeScores(entries, pocketedOrder);
+  const maxScore = Math.max(...candidateIds.map((id) => scores[id] ?? 0));
+  const topEntries = candidateIds.filter((id) => (scores[id] ?? 0) === maxScore);
+
+  if (topEntries.length <= 1) {
+    return topEntries;
+  }
+
+  let winner: string | undefined;
+  let bestBallValue = -Infinity;
+  for (const pocketed of pocketedOrder) {
+    if (!pocketed.scored || !pocketed.entryId || !topEntries.includes(pocketed.entryId)) {
+      continue;
+    }
+    const value = getBallValue(pocketed.ballNumber, pocketed.cushions);
+    if (value > bestBallValue) {
+      bestBallValue = value;
+      winner = pocketed.entryId;
+    }
+  }
+
+  return winner ? [winner] : topEntries;
+}
+
 export const orderOfNumbersEngine: GameEngine<OrderOfNumbersState> = {
   gameTypeId: ORDER_OF_NUMBERS_GAME_ID,
 
@@ -133,11 +166,10 @@ export const orderOfNumbersEngine: GameEngine<OrderOfNumbersState> = {
 
     // Boule noire.
     const cushions = Number(action.payload?.cushions ?? 0);
-    const previousPotterId = state.pocketedOrder[state.pocketedOrder.length - 1]?.entryId;
-    const wasFirstPocketEver = state.pocketedOrder.length === 0;
 
     if (!otherBallsRemain) {
       // Fin normale : la noire est la dernière boule, elle compte normalement.
+      const previousPotterId = state.pocketedOrder[state.pocketedOrder.length - 1]?.entryId;
       const pocketedOrder: PocketedBall[] = [
         ...state.pocketedOrder,
         { ballNumber, entryId: action.entryId, cushions, scored: true },
@@ -153,31 +185,21 @@ export const orderOfNumbersEngine: GameEngine<OrderOfNumbersState> = {
       };
     }
 
-    // Fin anticipée : la noire sort trop tôt, elle ne rapporte aucun point.
+    // Fin anticipée : la noire sort trop tôt, elle ne rapporte aucun point et
+    // son potteur est éliminé — exclu du départage et déclaré perdant. Le
+    // vainqueur est le joueur restant avec le plus de points.
     const pocketedOrder: PocketedBall[] = [
       ...state.pocketedOrder,
       { ballNumber, entryId: action.entryId, cushions, scored: false },
     ];
 
-    if (wasFirstPocketEver) {
-      return {
-        ...state,
-        remainingBalls,
-        pocketedOrder,
-        isOver: true,
-        winnerIds: state.entries.map((entry) => entry.id).filter((id) => id !== action.entryId),
-        loserIds: [action.entryId],
-      };
-    }
-
-    const scores = computeScores(state.entries, pocketedOrder);
     return {
       ...state,
       remainingBalls,
       pocketedOrder,
       isOver: true,
-      winnerIds: resolveWinner(scores, action.entryId, previousPotterId),
-      loserIds: [],
+      winnerIds: resolveEarlyEndWinner(state.entries, pocketedOrder, action.entryId),
+      loserIds: [action.entryId],
     };
   },
 
