@@ -10,6 +10,7 @@ interface BilliardBallProps {
   size?: number;
   selected?: boolean;
   onPress?: () => void;
+  onLongPress?: () => void;
 }
 
 const DEFAULT_SIZE = 48;
@@ -21,6 +22,7 @@ export function BilliardBall({
   size = DEFAULT_SIZE,
   selected = false,
   onPress,
+  onLongPress,
 }: BilliardBallProps) {
   const graphic = <BilliardBallGraphic number={number} size={size} />;
   const ringStyle: ViewStyle | undefined = selected
@@ -37,7 +39,12 @@ export function BilliardBall({
   }
 
   return (
-    <AnimatedPressable onPress={onPress} hitSlop={8} style={ringStyle}>
+    <AnimatedPressable
+      onPress={onPress}
+      onLongPress={onLongPress}
+      hitSlop={8}
+      style={ringStyle}
+    >
       {graphic}
     </AnimatedPressable>
   );

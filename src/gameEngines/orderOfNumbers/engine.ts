@@ -5,10 +5,13 @@ import { getBallValue } from './scoring';
 
 interface PocketedBall {
   ballNumber: number;
-  entryId: string;
+  // absent pour une boule retirée hors-jeu : l'événement n'est rattaché à
+  // aucun joueur.
+  entryId?: string;
   cushions?: number;
-  // false pour une boule noire empochée prématurément : l'événement est gardé
-  // pour l'historique et le départage, mais ne rapporte aucun point.
+  // false pour une boule noire empochée prématurément, ou pour une boule
+  // retirée hors-jeu : l'événement est gardé pour l'historique et le
+  // départage, mais ne rapporte aucun point.
   scored: boolean;
 }
 
@@ -32,7 +35,7 @@ function computeScores(
 ): Record<string, number> {
   const scores: Record<string, number> = Object.fromEntries(entries.map((entry) => [entry.id, 0]));
   for (const pocketed of pocketedOrder) {
-    if (!pocketed.scored) {
+    if (!pocketed.scored || !pocketed.entryId) {
       continue;
     }
     scores[pocketed.entryId] =
@@ -87,6 +90,22 @@ export const orderOfNumbersEngine: GameEngine<OrderOfNumbersState> = {
         return state;
       }
       return { ...state, currentEntryIndex: (state.currentEntryIndex + 1) % state.entries.length };
+    }
+
+    if (action.type === 'ball-out-of-play') {
+      const ballNumber = Number(action.payload?.ballNumber);
+      if (ballNumber === BLACK_BALL_NUMBER || !state.remainingBalls.includes(ballNumber)) {
+        return state;
+      }
+      return {
+        ...state,
+        remainingBalls: state.remainingBalls.filter((number) => number !== ballNumber),
+        pocketedOrder: [...state.pocketedOrder, { ballNumber, scored: false }],
+        currentEntryIndex:
+          state.entries.length === 0
+            ? state.currentEntryIndex
+            : (state.currentEntryIndex + 1) % state.entries.length,
+      };
     }
 
     if (action.type !== 'ball-pocketed' || !action.entryId) {
@@ -179,6 +198,11 @@ export const orderOfNumbersEngine: GameEngine<OrderOfNumbersState> = {
 
     if (action.type === 'turn-passed') {
       return `${entryName} ne rentre aucune boule — fin du tour`;
+    }
+
+    if (action.type === 'ball-out-of-play') {
+      const ballNumber = Number(action.payload?.ballNumber);
+      return `Boule ${ballNumber} retirée du jeu (hors-jeu) — fin du tour`;
     }
 
     if (action.type === 'ball-pocketed') {

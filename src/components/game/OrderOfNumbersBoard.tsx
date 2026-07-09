@@ -48,6 +48,13 @@ export function OrderOfNumbersBoard({
     onRecordAction(currentEntryId, 'ball-pocketed', { ballNumber });
   }
 
+  function handleLongPressBall(ballNumber: number) {
+    if (!currentEntryId || ballNumber === BLACK_BALL_NUMBER) {
+      return;
+    }
+    onRecordAction(undefined, 'ball-out-of-play', { ballNumber });
+  }
+
   function handleSelectCushions(cushions: number) {
     if (currentEntryId) {
       onRecordAction(currentEntryId, 'ball-pocketed', { ballNumber: BLACK_BALL_NUMBER, cushions });
@@ -94,10 +101,14 @@ export function OrderOfNumbersBoard({
 
       <View style={styles.subsection}>
         <AppText variant="subtitle">Boules restantes</AppText>
+        <AppText variant="caption" color={colors.text.muted} style={styles.hint}>
+          Appui long pour retirer une boule hors-jeu (rentrée par erreur, aucun point).
+        </AppText>
         <View style={styles.subsectionContent}>
           <BallRack
             ballNumbers={state.remainingBalls}
             onPressBall={result.isOver ? undefined : handlePressBall}
+            onLongPressBall={result.isOver ? undefined : handleLongPressBall}
           />
         </View>
       </View>
@@ -152,6 +163,9 @@ const styles = StyleSheet.create({
   },
   subsectionContent: {
     marginTop: spacing.md,
+  },
+  hint: {
+    marginTop: spacing.xs,
   },
   resultSection: {
     marginBottom: spacing.xl,

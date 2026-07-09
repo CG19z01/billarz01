@@ -4,7 +4,8 @@ import { StyleSheet, View } from 'react-native';
 import { BilliardBall } from '../../components/balls';
 import { AnimatedPressable, AppText, Button, ScreenContainer } from '../../components/common';
 import type { RootStackParamList } from '../../navigation/types';
-import { useNewGameSetupStore } from '../../store';
+import { matchRepository } from '../../repositories';
+import { useMatchStore, useNewGameSetupStore } from '../../store';
 import { colors, spacing } from '../../theme';
 
 const DECORATIVE_BALL_NUMBERS = [8, 9, 4];
@@ -14,6 +15,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export function HomeScreen({ navigation }: Props) {
   const handleStartNewGame = () => {
     useNewGameSetupStore.getState().reset();
+    matchRepository.clearActiveMatch();
+    useMatchStore.getState().clearMatch();
     navigation.navigate('NewGame');
   };
 

@@ -22,6 +22,15 @@ function passAction(entryId: string): MatchAction {
   return { id: `${entryId}-pass`, timestamp: Date.now(), entryId, type: 'turn-passed' };
 }
 
+function outOfPlayAction(ballNumber: number): MatchAction {
+  return {
+    id: `oop-${ballNumber}`,
+    timestamp: Date.now(),
+    type: 'ball-out-of-play',
+    payload: { ballNumber },
+  };
+}
+
 function pocketAll(
   state: OrderOfNumbersState,
   entryId: string,
@@ -109,6 +118,53 @@ describe('fin normale', () => {
 
     expect(engine.getScores(state)).toEqual({ p1: 42, p2: 42, p3: 36 });
     expect(engine.getResult(state).winnerIds).toEqual(['p1']);
+  });
+});
+
+describe('ball-out-of-play', () => {
+  it('removes the ball from the table without scoring it and passes the turn', () => {
+    let state = freshState();
+    state = engine.applyAction(state, outOfPlayAction(5));
+
+    expect(state.remainingBalls).not.toContain(5);
+    expect(engine.getScores(state)).toEqual({ p1: 0, p2: 0, p3: 0 });
+    expect(engine.getCurrentEntryId(state)).toBe('p2');
+  });
+
+  it('wraps the turn around to the first entry', () => {
+    let state = freshState([ENTRIES[0], ENTRIES[1]]);
+    state = engine.applyAction(state, passAction('p1'));
+    state = engine.applyAction(state, outOfPlayAction(5));
+
+    expect(engine.getCurrentEntryId(state)).toBe('p1');
+  });
+
+  it('is a no-op for the black ball', () => {
+    let state = freshState();
+    const beforeState = state;
+    state = engine.applyAction(state, outOfPlayAction(8));
+
+    expect(state).toBe(beforeState);
+    expect(state.remainingBalls).toContain(8);
+  });
+
+  it('is a no-op for a ball already off the table', () => {
+    let state = freshState();
+    state = engine.applyAction(state, pocketAction('p1', 5));
+    const afterPocket = state;
+    state = engine.applyAction(state, outOfPlayAction(5));
+
+    expect(state).toBe(afterPocket);
+  });
+
+  it('is not editable', () => {
+    expect(engine.isActionEditable(outOfPlayAction(5))).toBe(false);
+  });
+
+  it('describes the removal neutrally, without attributing it to a player', () => {
+    expect(engine.describeAction(outOfPlayAction(5), ENTRIES)).toBe(
+      'Boule 5 retirée du jeu (hors-jeu) — fin du tour',
+    );
   });
 });
 

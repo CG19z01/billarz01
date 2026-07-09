@@ -6,10 +6,11 @@ import { spacing } from '../../theme';
 interface BallRackProps {
   ballNumbers: number[];
   onPressBall?: (ballNumber: number) => void;
+  onLongPressBall?: (ballNumber: number) => void;
   size?: number;
 }
 
-export function BallRack({ ballNumbers, onPressBall, size = 40 }: BallRackProps) {
+export function BallRack({ ballNumbers, onPressBall, onLongPressBall, size = 40 }: BallRackProps) {
   return (
     <View style={styles.grid}>
       {ballNumbers.map((ballNumber) => (
@@ -18,6 +19,7 @@ export function BallRack({ ballNumbers, onPressBall, size = 40 }: BallRackProps)
           number={ballNumber}
           size={size}
           onPress={onPressBall ? () => onPressBall(ballNumber) : undefined}
+          onLongPress={onLongPressBall ? () => onLongPressBall(ballNumber) : undefined}
         />
       ))}
     </View>
