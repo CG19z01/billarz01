@@ -44,7 +44,6 @@ export const useNewGameSetupStore = create<NewGameSetupState>((set, get) => ({
       players: createDefaultPlayers(safeCount),
       teamMode: DEFAULT_TEAM_MODE,
       teams: [],
-      gameTypeId: undefined,
     });
   },
 

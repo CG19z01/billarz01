@@ -75,10 +75,10 @@ describe('useNewGameSetupStore', () => {
     expect(useNewGameSetupStore.getState().gameTypeId).toBe('game-1');
   });
 
-  it('clears the selected game type when the player count changes', () => {
+  it('keeps the selected game type when the player count changes', () => {
     useNewGameSetupStore.getState().setGameTypeId('game-1');
     useNewGameSetupStore.getState().setPlayerCount(3);
 
-    expect(useNewGameSetupStore.getState().gameTypeId).toBeUndefined();
+    expect(useNewGameSetupStore.getState().gameTypeId).toBe('game-1');
   });
 });

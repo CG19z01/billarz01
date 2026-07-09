@@ -17,7 +17,7 @@ export function HomeScreen({ navigation }: Props) {
     useNewGameSetupStore.getState().reset();
     matchRepository.clearActiveMatch();
     useMatchStore.getState().clearMatch();
-    navigation.navigate('NewGame');
+    navigation.navigate('GameSelection');
   };
 
   return (

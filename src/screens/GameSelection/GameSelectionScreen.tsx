@@ -11,7 +11,7 @@ import { colors, spacing } from '../../theme';
 type Props = NativeStackScreenProps<RootStackParamList, 'GameSelection'>;
 
 export function GameSelectionScreen({ navigation }: Props) {
-  const { gameTypeId, setGameTypeId, canProceedToMatch } = useGameSelection();
+  const { gameTypeId, setGameTypeId, canProceedToNewGame } = useGameSelection();
 
   return (
     <ScreenContainer>
@@ -35,8 +35,8 @@ export function GameSelectionScreen({ navigation }: Props) {
 
       <Button
         label="Suivant"
-        disabled={!canProceedToMatch}
-        onPress={() => navigation.navigate('Match')}
+        disabled={!canProceedToNewGame}
+        onPress={() => navigation.navigate('NewGame')}
       />
     </ScreenContainer>
   );

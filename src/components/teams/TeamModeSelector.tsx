@@ -22,7 +22,7 @@ export function TeamModeSelector({ value, onChange }: TeamModeSelectorProps) {
             style={[styles.option, selected && styles.optionSelected]}
           >
             <AppText
-              variant="bodyMedium"
+              variant="subtitle"
               color={selected ? colors.text.onAccent : colors.text.primary}
             >
               {option.label}
@@ -36,10 +36,10 @@ export function TeamModeSelector({ value, onChange }: TeamModeSelectorProps) {
 
 const styles = StyleSheet.create({
   list: {
-    gap: spacing.sm,
+    gap: spacing.md,
   },
   option: {
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.xl,
     paddingHorizontal: spacing.lg,
     borderRadius: radius.md,
     backgroundColor: colors.background.surface,

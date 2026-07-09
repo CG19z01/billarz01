@@ -18,7 +18,7 @@ export function PlayerSetupScreen({ navigation }: Props) {
         Joueurs
       </AppText>
       <AppText variant="heading1" style={styles.title}>
-        Qui joue ce soir ?
+        Noms des joueurs
       </AppText>
 
       <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>

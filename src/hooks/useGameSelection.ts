@@ -7,6 +7,6 @@ export function useGameSelection() {
   return {
     gameTypeId,
     setGameTypeId,
-    canProceedToMatch: gameTypeId !== undefined,
+    canProceedToNewGame: gameTypeId !== undefined,
   };
 }

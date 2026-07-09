@@ -18,6 +18,11 @@ export function AboutScreen() {
         <AppText variant="body" color={colors.text.secondary} style={styles.tagline}>
           Le compteur de score qui a du style.
         </AppText>
+        <AppText variant="body" color={colors.text.secondary} style={styles.description}>
+          Compte les points, gère les tours de jeu et garde en mémoire tes dernières parties, quel
+          que soit le jeu de billard auquel tu joues. Tout reste sur ton téléphone : pas de compte,
+          pas de publicité, pas de connexion nécessaire.
+        </AppText>
         <AppText variant="caption" color={colors.text.muted} style={styles.version}>
           Version {version}
         </AppText>
@@ -38,6 +43,10 @@ const styles = StyleSheet.create({
   },
   tagline: {
     marginTop: spacing.sm,
+    textAlign: 'center',
+  },
+  description: {
+    marginTop: spacing.lg,
     textAlign: 'center',
   },
   version: {

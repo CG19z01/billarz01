@@ -43,7 +43,7 @@ export function TeamSetupScreen({ navigation }: Props) {
         <View style={styles.teamsSection} />
       )}
 
-      <Button label="Suivant" onPress={() => navigation.navigate('GameSelection')} />
+      <Button label="Suivant" onPress={() => navigation.navigate('Match')} />
     </ScreenContainer>
   );
 }

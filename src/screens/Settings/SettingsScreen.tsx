@@ -24,14 +24,6 @@ export function SettingsScreen() {
       </AppText>
 
       <View style={styles.section}>
-        <AppText variant="subtitle">Apparence</AppText>
-        <AppText variant="body" color={colors.text.secondary} style={styles.sectionBody}>
-          Thème sombre activé en permanence, pour une expérience fidèle à l&apos;ambiance d&apos;une
-          salle de billard.
-        </AppText>
-      </View>
-
-      <View style={styles.section}>
         <AppText variant="subtitle">Données</AppText>
         <AppText variant="body" color={colors.text.secondary} style={styles.sectionBody}>
           L&apos;historique conserve automatiquement les parties des 3 dernières heures.

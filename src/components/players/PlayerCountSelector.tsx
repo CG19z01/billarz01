@@ -26,7 +26,7 @@ export function PlayerCountSelector({ value, onChange }: PlayerCountSelectorProp
             style={[styles.chip, selected && styles.chipSelected]}
           >
             <AppText
-              variant="subtitle"
+              variant="heading2"
               color={selected ? colors.text.onAccent : colors.text.primary}
             >
               {count}
@@ -38,13 +38,14 @@ export function PlayerCountSelector({ value, onChange }: PlayerCountSelectorProp
   );
 }
 
-const CHIP_SIZE = 44;
+const CHIP_SIZE = 60;
 
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.sm,
+    justifyContent: 'center',
+    gap: spacing.md,
   },
   chip: {
     width: CHIP_SIZE,

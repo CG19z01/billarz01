@@ -36,6 +36,11 @@ export function RootNavigator() {
         options={{ headerShown: false, ...fadeTransition }}
       />
       <Stack.Screen
+        name="GameSelection"
+        component={GameSelectionScreen}
+        options={{ title: 'Choix du jeu' }}
+      />
+      <Stack.Screen
         name="NewGame"
         component={NewGameScreen}
         options={{ title: 'Nouvelle partie' }}
@@ -46,11 +51,6 @@ export function RootNavigator() {
         options={{ title: 'Joueurs' }}
       />
       <Stack.Screen name="TeamSetup" component={TeamSetupScreen} options={{ title: 'Équipes' }} />
-      <Stack.Screen
-        name="GameSelection"
-        component={GameSelectionScreen}
-        options={{ title: 'Choix du jeu' }}
-      />
       <Stack.Screen name="Match" component={MatchScreen} options={{ title: 'Partie' }} />
       <Stack.Screen name="History" component={HistoryScreen} options={{ title: 'Historique' }} />
       <Stack.Screen
