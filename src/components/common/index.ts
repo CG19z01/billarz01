@@ -1,8 +1,11 @@
 export { AnimatedPressable } from './AnimatedPressable';
 export { AppModal } from './AppModal';
 export { AppText } from './AppText';
+export { BackButton } from './BackButton';
 export type { ButtonVariant } from './Button';
 export { Button } from './Button';
 export { PlaceholderScreen } from './PlaceholderScreen';
+export { PoolTableGraphic } from './PoolTableGraphic';
 export { ScreenContainer } from './ScreenContainer';
+export { SetupProgressDots } from './SetupProgressDots';
 export { Stepper } from './Stepper';

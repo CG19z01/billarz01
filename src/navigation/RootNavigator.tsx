@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { fadeTransition } from '../animations';
 import { AboutScreen } from '../screens/About';
 import { GameDetailScreen } from '../screens/GameDetail';
+import { GameRulesScreen } from '../screens/GameRules';
 import { GameSelectionScreen } from '../screens/GameSelection';
 import { HistoryScreen } from '../screens/History';
 import { HomeScreen } from '../screens/Home';
@@ -38,19 +39,20 @@ export function RootNavigator() {
       <Stack.Screen
         name="GameSelection"
         component={GameSelectionScreen}
-        options={{ title: 'Choix du jeu' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="NewGame"
-        component={NewGameScreen}
-        options={{ title: 'Nouvelle partie' }}
+        name="GameRules"
+        component={GameRulesScreen}
+        options={{ headerShown: false }}
       />
+      <Stack.Screen name="NewGame" component={NewGameScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name="PlayerSetup"
         component={PlayerSetupScreen}
-        options={{ title: 'Joueurs' }}
+        options={{ headerShown: false }}
       />
-      <Stack.Screen name="TeamSetup" component={TeamSetupScreen} options={{ title: 'Équipes' }} />
+      <Stack.Screen name="TeamSetup" component={TeamSetupScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Match" component={MatchScreen} options={{ title: 'Partie' }} />
       <Stack.Screen name="History" component={HistoryScreen} options={{ title: 'Historique' }} />
       <Stack.Screen

@@ -26,6 +26,7 @@ interface NewGameSetupState {
   setTeamMode: (mode: TeamMode) => void;
   randomizeTeams: () => void;
   cyclePlayerTeam: (playerId: string) => void;
+  assignPlayerToTeam: (playerId: string, teamId: string) => void;
   setGameTypeId: (gameTypeId: string) => void;
   reset: () => void;
 }
@@ -84,6 +85,23 @@ export const useNewGameSetupStore = create<NewGameSetupState>((set, get) => ({
           return { ...team, playerIds: [...team.playerIds, playerId] };
         }
         return team;
+      }),
+    });
+  },
+
+  assignPlayerToTeam: (playerId, teamId) => {
+    const { teams } = get();
+    const targetTeam = teams.find((team) => team.id === teamId);
+    if (!targetTeam || targetTeam.playerIds.includes(playerId)) {
+      return;
+    }
+
+    set({
+      teams: teams.map((team) => {
+        if (team.id === teamId) {
+          return { ...team, playerIds: [...team.playerIds, playerId] };
+        }
+        return { ...team, playerIds: team.playerIds.filter((id) => id !== playerId) };
       }),
     });
   },

@@ -7,9 +7,17 @@ interface PlayerNameInputProps {
   index: number;
   value: string;
   onChangeText: (text: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
-export function PlayerNameInput({ index, value, onChangeText }: PlayerNameInputProps) {
+export function PlayerNameInput({
+  index,
+  value,
+  onChangeText,
+  onFocus,
+  onBlur,
+}: PlayerNameInputProps) {
   return (
     <View style={styles.row}>
       <View style={styles.badge}>
@@ -20,6 +28,8 @@ export function PlayerNameInput({ index, value, onChangeText }: PlayerNameInputP
       <TextInput
         value={value}
         onChangeText={onChangeText}
+        onFocus={onFocus}
+        onBlur={onBlur}
         placeholder={`Joueur ${index + 1}`}
         placeholderTextColor={colors.text.muted}
         style={styles.input}

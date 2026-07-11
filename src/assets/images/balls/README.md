@@ -21,7 +21,3 @@ rendu vectoriel (SVG), fidèle aux couleurs standard du billard américain.
 3. `BilliardBall` utilisera automatiquement la nouvelle image — aucun autre
    fichier à modifier.
 
-## Pour ajouter la boule blanche (0)
-
-Ajoutez `ball_0.png` ici puis `0: require('../assets/images/balls/ball_0.png')`
-dans `ballAssets.ts`.

@@ -1,7 +1,7 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { AppText, Button, ScreenContainer } from '../../components/common';
+import { AppText, BackButton, Button, ScreenContainer } from '../../components/common';
 import { GameTypeCard } from '../../components/game';
 import { GAME_TYPES } from '../../constants/games';
 import { useGameSelection } from '../../hooks/useGameSelection';
@@ -15,6 +15,9 @@ export function GameSelectionScreen({ navigation }: Props) {
 
   return (
     <ScreenContainer>
+      <View style={styles.header}>
+        <BackButton onPress={() => navigation.goBack()} />
+      </View>
       <AppText variant="label" color={colors.accent.default}>
         Choix du jeu
       </AppText>
@@ -29,6 +32,7 @@ export function GameSelectionScreen({ navigation }: Props) {
             gameType={gameType}
             selected={gameType.id === gameTypeId}
             onPress={() => setGameTypeId(gameType.id)}
+            onPressRules={() => navigation.navigate('GameRules', { gameTypeId: gameType.id })}
           />
         ))}
       </ScrollView>
@@ -43,6 +47,9 @@ export function GameSelectionScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    marginBottom: spacing.lg,
+  },
   title: {
     marginTop: spacing.sm,
     marginBottom: spacing.xl,

@@ -1,6 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 import { AppText, ScreenContainer } from '../../components/common';
 import { useHistoryCleanup } from '../../hooks/useHistoryCleanup';
@@ -22,11 +22,13 @@ export function SplashScreen({ navigation }: Props) {
   return (
     <ScreenContainer background="felt">
       <View style={styles.content}>
-        <AppText variant="label" color={colors.accent.default}>
-          Salle de billard
-        </AppText>
+        <Image
+          source={require('../../assets/images/logo-billarz01.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <AppText variant="display" style={styles.title}>
-          Billard Score
+          billarz01
         </AppText>
         <View style={styles.divider} />
       </View>
@@ -39,6 +41,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  logo: {
+    width: 88,
+    height: 88,
   },
   title: {
     marginTop: spacing.sm,

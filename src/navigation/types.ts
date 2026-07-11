@@ -5,6 +5,7 @@ export type RootStackParamList = {
   PlayerSetup: undefined;
   TeamSetup: undefined;
   GameSelection: undefined;
+  GameRules: { gameTypeId: string };
   Match: undefined;
   History: undefined;
   GameDetail: { matchId: string };

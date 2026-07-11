@@ -66,6 +66,47 @@ describe('useNewGameSetupStore', () => {
     expect(useNewGameSetupStore.getState().teams).toEqual([]);
   });
 
+  it('moves a player to a specific team when assigned directly', () => {
+    // Équipes/joueurs posés explicitement (plutôt que via setPlayerCount/setTeamMode)
+    // pour avoir des ids garantis distincts, indépendamment de generateId().
+    useNewGameSetupStore.setState({
+      players: [
+        { id: 'p1', name: 'Alice' },
+        { id: 'p2', name: 'Bob' },
+      ],
+      teamMode: 'teams-2',
+      teams: [
+        { id: 't1', name: 'Équipe 1', color: '#fff', playerIds: ['p1'] },
+        { id: 't2', name: 'Équipe 2', color: '#000', playerIds: ['p2'] },
+      ],
+    });
+
+    useNewGameSetupStore.getState().assignPlayerToTeam('p1', 't2');
+
+    const state = useNewGameSetupStore.getState();
+    expect(state.teams[0].playerIds).not.toContain('p1');
+    expect(state.teams[1].playerIds).toContain('p1');
+  });
+
+  it('does nothing when assigning a player to the team they are already on', () => {
+    const before = [
+      { id: 't1', name: 'Équipe 1', color: '#fff', playerIds: ['p1'] },
+      { id: 't2', name: 'Équipe 2', color: '#000', playerIds: ['p2'] },
+    ];
+    useNewGameSetupStore.setState({
+      players: [
+        { id: 'p1', name: 'Alice' },
+        { id: 'p2', name: 'Bob' },
+      ],
+      teamMode: 'teams-2',
+      teams: before,
+    });
+
+    useNewGameSetupStore.getState().assignPlayerToTeam('p1', 't1');
+
+    expect(useNewGameSetupStore.getState().teams).toEqual(before);
+  });
+
   it('starts with no game type selected', () => {
     expect(useNewGameSetupStore.getState().gameTypeId).toBeUndefined();
   });

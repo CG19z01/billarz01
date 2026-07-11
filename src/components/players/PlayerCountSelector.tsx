@@ -14,6 +14,8 @@ const AVAILABLE_COUNTS = Array.from(
   (_, index) => MIN_PLAYERS + index,
 );
 
+const COLUMNS = 4;
+
 export function PlayerCountSelector({ value, onChange }: PlayerCountSelectorProps) {
   return (
     <View style={styles.row}>
@@ -38,8 +40,6 @@ export function PlayerCountSelector({ value, onChange }: PlayerCountSelectorProp
   );
 }
 
-const CHIP_SIZE = 60;
-
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   chip: {
-    width: CHIP_SIZE,
-    height: CHIP_SIZE,
-    borderRadius: radius.pill,
+    width: `${100 / COLUMNS - 5}%`,
+    aspectRatio: 1,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.background.surface,
